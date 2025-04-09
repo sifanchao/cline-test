@@ -1,6 +1,10 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import GroupList from './routes/GroupList';
+import TransactionList from './routes/TransactionList';
+import RoleDefinition from './routes/RoleDefinition';
+import PersonManagement from './routes/PersonManagement';
 
 const App = () => {
   return (
@@ -41,9 +45,5 @@ const App = () => {
   );
 };
 
-const GroupList = () => <h2>事务（群）列表</h2>;
-const TransactionList = () => <h2>事务列表</h2>;
-const RoleDefinition = () => <h2>角色定义</h2>;
-const PersonManagement = () => <h2>人员管理</h2>;
 
 export default App;
