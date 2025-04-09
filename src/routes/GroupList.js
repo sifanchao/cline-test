@@ -1,5 +1,7 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useState } from 'react';
+import { Table, Button, Form, Input, Select, Row, Col } from 'antd';
+
+const { Option } = Select;
 
 const GroupList = () => {
   const columns = [
@@ -14,7 +16,7 @@ const GroupList = () => {
     { title: '操作信息', dataIndex: 'actions', key: 'actions' },
   ];
 
-  const data = [
+  const originalData = [
     {
       key: '1',
       name: '事务群A',
@@ -40,8 +42,73 @@ const GroupList = () => {
       actions: '查看详情',
     },
   ];
+  const [filteredData, setFilteredData] = useState(originalData);
 
-  return <Table columns={columns} dataSource={data} />;
+  const [form] = Form.useForm();
+
+  const handleSearch = (values) => {
+    if (Object.keys(values).length === 0) {
+      setFilteredData(originalData);
+      return;
+    }
+    const filtered = originalData.filter((item) => {
+      return (
+        (!values.year || item.name.includes(values.year)) &&
+        (!values.category || item.category.includes(values.category)) &&
+        (!values.name || item.name.includes(values.name)) &&
+        (!values.leader || item.leader.includes(values.leader)) &&
+        (!values.status || item.status === values.status)
+      );
+    });
+    setFilteredData(filtered);
+  };
+
+  return (
+      <div>
+        <Form layout="inline" form={form} onFinish={handleSearch} style={{ marginBottom: 16 }}>
+          <Row gutter={[0, 12]}>
+            <Col span={8}>
+              <Form.Item name="year" label="年份" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                <Input placeholder="请输入年份" style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="category" label="分类" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                <Input placeholder="请输入分类" style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="leader" label="负责人" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                <Input placeholder="请输入负责人" style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="name" label="事务（群）名称" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                <Input placeholder="请输入名称" style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="status" label="状态" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+                <Select placeholder="请选择状态" style={{ width: '100%' }} allowClear>
+                  <Option value="进行中">进行中</Option>
+                  <Option value="已完成">已完成</Option>
+                  <Option value="未启动">未启动</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">查询</Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+        <div style={{ textAlign: 'right', marginBottom: 16 }}>
+          <Button type="primary">新增</Button>
+      </div>
+        <Table columns={columns} dataSource={filteredData} />
+    </div>
+  );
 };
 
 export default GroupList;
