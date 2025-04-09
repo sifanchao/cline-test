@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <h1>四级菜单示例</h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/group-list">事务（群）列表</Link>
+              <ul>
+                <li>
+                  <Link to="/group-list/transaction-list">事务列表</Link>
+                  <ul>
+                    <li>
+                      <Link to="/group-list/transaction-list/role-definition">角色定义</Link>
+                      <ul>
+                        <li>
+                          <Link to="/group-list/transaction-list/role-definition/person-management">人员管理</Link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/group-list" element={<GroupList />} />
+          <Route path="/group-list/transaction-list" element={<TransactionList />} />
+          <Route path="/group-list/transaction-list/role-definition" element={<RoleDefinition />} />
+          <Route path="/group-list/transaction-list/role-definition/person-management" element={<PersonManagement />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
+
+const GroupList = () => <h2>事务（群）列表</h2>;
+const TransactionList = () => <h2>事务列表</h2>;
+const RoleDefinition = () => <h2>角色定义</h2>;
+const PersonManagement = () => <h2>人员管理</h2>;
 
 export default App;
