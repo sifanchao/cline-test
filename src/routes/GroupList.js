@@ -55,7 +55,8 @@ const GroupList = () => {
   };
 
   const handleSave = () => {
-    newItemForm.validateFields().then((values) => {
+    newItemForm.validateFields()
+      .then((values) => {
       const newItem = {
         key: (originalData.length + 1).toString(),
         name: values.name,
@@ -71,7 +72,14 @@ const GroupList = () => {
       setFilteredData([...filteredData, newItem]);
       setIsModalVisible(false);
       newItemForm.resetFields();
-    });
+      })
+      .catch((errorInfo) => {
+        const errorFields = errorInfo.errorFields.map((field) => field.name[0]);
+        Modal.error({
+          title: '保存失败',
+          content: `以下字段未填写：${errorFields.join('、')}`,
+        });
+      });
   };
 
   const handleCancel = () => {
